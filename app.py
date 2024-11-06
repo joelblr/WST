@@ -13,17 +13,16 @@ def submit():
 
     # Collect the form data
     data = {
-        "cust_name": cust_name_entry.get(),
-        "review_title": review_title_entry.get(),
-        "rating": rating_entry.get(),
-        "comment": comment_entry.get(),
-        "base_url": base_url_entry.get(),
-        "product_name": product_name_entry.get(),
-        "filename": filename_entry.get(),
-        "num_pages": num_pages_entry.get()
+        "base_url": base_url_entry.get().strip(),
+        "product_name": product_name_entry.get().strip(),
+        "cust_name": cust_name_entry.get().strip(),
+        "review_title": review_title_entry.get().strip(),
+        "rating": rating_entry.get().strip(),
+        "comment": comment_entry.get().strip(),
+        "filename": filename_entry.get().strip(),
+        "num_pages": num_pages_entry.get().strip()
     }
 
-    # print(data)
     # Check if any of the fields are empty
     for key in data :
         if not data[key] :
