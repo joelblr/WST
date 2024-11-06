@@ -38,7 +38,7 @@ Follow these steps to set up and run the application:
    python app.py
    ```
 
-## Result
+## GUI Result
 ![image](https://github.com/user-attachments/assets/a12ffa6c-2903-4853-bb5b-16fe9c38098e)
 
 ## Sample Input Data
@@ -51,3 +51,5 @@ Follow these steps to set up and run the application:
 ##### num_pages: 25
 ##### filename: Test
 
+## Sample Output Dataset
+![image](https://github.com/user-attachments/assets/90b0e1a8-cd2c-41db-8314-9e2939ee2584)
