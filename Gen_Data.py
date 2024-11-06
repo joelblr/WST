@@ -10,17 +10,6 @@ data_json = sys.argv[1]  # First argument after the script name
 
 # Deserialize the JSON string back into a dictionary
 inputs = json.loads(data_json)
-# inputs = {
-#     "base_url": input("Base URL: ")
-#     "product_name": input("Product_name: ")
-#     'cust_name': input("Class value for Customer_Name: "),
-#     'review_title': input("Class value for Review Title: "),
-#     'rating': input("Class value for Rating: "),
-#     'comment': input("Class value for Comment: "),
-#     'num_pages': input("Number of Pages: "),
-#     "filename": input("SaveAs FileName: ")
-# }
-
 
 # User-Agent and Accept-Language headers
 headers = {
@@ -34,8 +23,6 @@ review_title = []
 ratings = []
 comments = []
 
-### Product url
-# base_url = "https://www.flipkart.com/motorola-g84-5g-viva-magneta-256-gb/product-reviews/itmed938e33ffdf5?pid=MOBGQFX672GDDQAQ&lid=LSTMOBGQFX672GDDQAQSSIAM2&marketplace=FLIPKART"
 for i in range(inputs['num_pages']) :
     # Construct the URL for the current page
     url = inputs['base_url'] + '&page=' + str(i+1)
@@ -110,7 +97,5 @@ data = {
 df = pd.DataFrame(data)
 # df['Rating'].fillna(0, inplace=True)
 
-
 # Save the DataFrame to a CSV file
-# filename = 'MOTOROLA g84 5G (Viva Magneta, 256 GB).csv'
 df.to_csv(inputs['filename'] + '.csv', index=False)
