@@ -49,7 +49,8 @@ Follow these steps to set up and run the application:
    ```
 
 ## GUI Result
-![image](https://github.com/user-attachments/assets/a12ffa6c-2903-4853-bb5b-16fe9c38098e)
+![image](https://github.com/user-attachments/assets/04b86c72-5d9a-47ed-8d0e-e98ad558b91a)
+
 
 ## Sample Input Data
 ##### base_url: https://www.flipkart.com/motorola-g84-5g-viva-magneta-256-gb/product-reviews/itmed938e33ffdf5?pid=MOBGQFX672GDDQAQ&lid=LSTMOBGQFX672GDDQAQSSIAM2&marketplace=FLIPKART
