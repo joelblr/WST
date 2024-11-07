@@ -3,7 +3,6 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
 import Modules
 import Clean_Data
 
@@ -25,17 +24,30 @@ customer_names = []
 review_title = []
 ratings = []
 comments = []
+timeout_duration = 3
 
 for i in range(inputs['from_page'], inputs['to_page']+1) :
 
     # Construct the URL for the current page
     url = inputs['base_url'] + '&page=' + str(i)
 
-    # Send a GET request to the page
-    page = requests.get(url, headers=headers)
+    try :
+        # Send a GET request to the page
+        response = requests.get(url, headers=headers, timeout=timeout_duration)
+
+    except requests.exceptions.Timeout :
+        # Handle the case when the request times out
+        print(f"Request for page {i} timed out after {timeout_duration} seconds. Skipping...")
+        continue  # Skip this iteration and move to the next page
+
+    # Check if the response status code is not 200 (OK)
+    if response.status_code != 200 :
+        print(f"Skipping page {i} due to bad response (Status Code: {response.status_code})")
+        continue  # Skip this iteration and move to the next page
+
 
     # Parse the HTML content
-    soup = BeautifulSoup(page.content, 'html.parser')
+    soup = BeautifulSoup(response.content, 'html.parser')
 
     # Extract customer names
     # names = soup.find_all('p', class_="_2NsDsF AwS1CA")
@@ -90,4 +102,4 @@ df = pd.DataFrame(data)
 # df['Rating'].fillna(0, inplace=True)
 
 # Save the DataFrame to a CSV file
-Modules.save_df(df, inputs['filename'], '.csv')
+Modules.save_df(df, inputs['filename'], 'csv')
