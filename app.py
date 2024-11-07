@@ -1,15 +1,13 @@
+import sys
+import json
+import threading
+import subprocess
 import customtkinter as ctk
 import tkinter.messagebox as messagebox
-import subprocess
-import json
-import sys
-import threading
 
 
-# filename = ""
 # Function to handle form submission
 def submit() :
-    # global filename
 
     # Collect the form data
     data = {
@@ -19,10 +17,9 @@ def submit() :
         "review_title": review_title_entry.get().strip(),
         "rating": rating_entry.get().strip(),
         "comment": comment_entry.get().strip(),
-        "filename": filename_entry.get().strip(),
         "from_page": from_page_entry.get().strip(),
         "to_page": to_page_entry.get().strip(),
-
+        "filename": filename_entry.get().strip(),
     }
 
     # Check if any of the fields are empty
@@ -43,8 +40,6 @@ def submit() :
         return  # Exit the function if input is invalid
 
 
-
-    # filename = filename_entry.get()
     # Serialize the dictionary into a JSON string
     data_json = json.dumps(data)
 
@@ -60,9 +55,10 @@ def submit() :
     # Create a thread to run the subprocess so it doesn't block the UI
     threading.Thread(target=run_subprocess, args=(data_json,)).start()
 
+
 # Function to run the subprocess
 def run_subprocess(data_json):
-    # global filename
+
     try:
         # Pass the data to another Python script (for example, 'other_script.py')
         result = subprocess.run(
