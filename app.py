@@ -6,10 +6,10 @@ import sys
 import threading
 
 
-filename = ""
+# filename = ""
 # Function to handle form submission
-def submit():
-    global filename
+def submit() :
+    # global filename
 
     # Collect the form data
     data = {
@@ -20,7 +20,9 @@ def submit():
         "rating": rating_entry.get().strip(),
         "comment": comment_entry.get().strip(),
         "filename": filename_entry.get().strip(),
-        "num_pages": num_pages_entry.get().strip()
+        "from_page": from_page_entry.get().strip(),
+        "to_page": to_page_entry.get().strip(),
+
     }
 
     # Check if any of the fields are empty
@@ -29,16 +31,20 @@ def submit():
             messagebox.showerror("Missing Information", "Please fill in all the fields.")
             return
 
-    # Validate "Number of Pages" to ensure it is an integer
+    # Validate "From Page", and "To Page" to ensure they are integers
     try:
-        data['num_pages'] = int(data['num_pages'])  # Convert the input to an integer
+        data['from_page'] = int(data['from_page'])
+        data['to_page'] = int(data['to_page'])
+        if data['from_page'] <= 0 or data['from_page'] > data['to_page'] :
+            raise ValueError
+
     except ValueError:
-        messagebox.showerror("Invalid Input", "Please enter a valid integer for 'Number of Pages'.")
+        messagebox.showerror("Invalid Input", "Please enter valid integers for 'From Page', and 'To Page'.")
         return  # Exit the function if input is invalid
 
 
 
-    filename = filename_entry.get()
+    # filename = filename_entry.get()
     # Serialize the dictionary into a JSON string
     data_json = json.dumps(data)
 
@@ -47,8 +53,8 @@ def submit():
     submit_button.grid_forget()
     
     # Show the loading indicator
-    loading_label.grid(row=9, columnspan=2, pady=30)  # Place loading label in the grid
-    progress_bar.grid(row=10, columnspan=2, pady=20)  # Place progress bar in the grid
+    loading_label.grid(row=10, columnspan=2, pady=30)  # Place loading label in the grid
+    progress_bar.grid(row=11, columnspan=2, pady=20)  # Place progress bar in the grid
     progress_bar.start()
 
     # Create a thread to run the subprocess so it doesn't block the UI
@@ -56,7 +62,7 @@ def submit():
 
 # Function to run the subprocess
 def run_subprocess(data_json):
-    global filename
+    # global filename
     try:
         # Pass the data to another Python script (for example, 'other_script.py')
         result = subprocess.run(
@@ -69,12 +75,11 @@ def run_subprocess(data_json):
         progress_bar.stop()
 
         # If there was an error in stderr, show the error message in a pop-up
-        if result.stderr:
+        if result.stderr :
             messagebox.showerror("Error", f"Error in other script: {result.stderr}")
-        else:
+        else :
             resinfo = result.stdout
-            print("Output from other script:", result.stdout)
-            messagebox.showinfo("Success", f"Dataset has been Downloaded successfully as {filename}.csv! \n{resinfo}")
+            messagebox.showinfo("Success", f"Dataset has been Downloaded Successfully.\n{resinfo}")
 
     except Exception as e:
         # Stop the progress bar in case of an exception
@@ -85,7 +90,7 @@ def run_subprocess(data_json):
     finally:
         # Re-enable the Submit button after the subprocess finishes
         submit_button.configure(state="normal")
-        submit_button.grid(row=9, columnspan=2, pady=20)
+        submit_button.grid(row=10, columnspan=2, pady=20)
         loading_label.grid_forget()  # Remove loading label from the grid
         progress_bar.grid_forget()  # Remove progress bar from the grid
 
@@ -94,8 +99,8 @@ def run_subprocess(data_json):
 app = ctk.CTk()
 
 # Set window title and size
-app.title("@https://github.com/joelblr/WST")
-app.geometry("500x550")  # Adjusted height to accommodate the grid
+app.title("@https://github.com/joelblr/WST-FKART")
+app.geometry("500x600")  # Adjusted height to accommodate the grid
 
 # Set the background color of the main window (not the labels)
 app.configure(fg_color="#2C3E50")  # Dark Blue Background for the main window
@@ -104,7 +109,7 @@ app.configure(fg_color="#2C3E50")  # Dark Blue Background for the main window
 text_color = "#A3D0D4"  # Light Cyan
 
 # Create a header label
-header_label = ctk.CTkLabel(app, text="Web Scraper Tool", font=("Helvetica", 20, "bold"), text_color=text_color)
+header_label = ctk.CTkLabel(app, text="Web Scraper Tool: FlipKart", font=("Helvetica", 20, "bold"), text_color=text_color)
 header_label.grid(row=0, columnspan=2, pady=20)
 
 # Base URL (first field)
@@ -143,22 +148,29 @@ comment_label.grid(row=6, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
 comment_entry = ctk.CTkEntry(app, placeholder_text="Enter Comment Class-Id", font=("Helvetica", 14))
 comment_entry.grid(row=6, column=1, pady=5, padx=20, sticky="ew")
 
-# Number of Pages (new integer field)
-num_pages_label = ctk.CTkLabel(app, text="Number of Pages", font=("Helvetica", 14, "bold"), text_color=text_color)
-num_pages_label.grid(row=7, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
-num_pages_entry = ctk.CTkEntry(app, placeholder_text="Enter Number of Pages", font=("Helvetica", 14))
-num_pages_entry.grid(row=7, column=1, pady=5, padx=20, sticky="ew")
+# From Page (new field)
+from_page_label = ctk.CTkLabel(app, text="From Page", font=("Helvetica", 14, "bold"), text_color=text_color)
+from_page_label.grid(row=7, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
+from_page_entry = ctk.CTkEntry(app, placeholder_text="Enter From Page", font=("Helvetica", 14))
+from_page_entry.grid(row=7, column=1, pady=5, padx=20, sticky="ew")
+
+# To Page (new field)
+to_page_label = ctk.CTkLabel(app, text="To Page", font=("Helvetica", 14, "bold"), text_color=text_color)
+to_page_label.grid(row=8, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
+to_page_entry = ctk.CTkEntry(app, placeholder_text="Enter To Page", font=("Helvetica", 14))
+to_page_entry.grid(row=8, column=1, pady=5, padx=20, sticky="ew")
+
 
 # Filename
 filename_label = ctk.CTkLabel(app, text="Save-As", font=("Helvetica", 14, "bold"), text_color=text_color)
-filename_label.grid(row=8, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
+filename_label.grid(row=9, column=0, pady=(10, 5), padx=(10, 10), sticky="w")
 filename_entry = ctk.CTkEntry(app, placeholder_text="Filename.csv", font=("Helvetica", 14))
-filename_entry.grid(row=8, column=1, pady=5, padx=20, sticky="ew")
+filename_entry.grid(row=9, column=1, pady=5, padx=20, sticky="ew")
 
 
 # Submit Button
 submit_button = ctk.CTkButton(app, text="Generate", font=("Helvetica", 16, "bold"), fg_color="#2980B9", text_color="white", command=submit)
-submit_button.grid(row=9, columnspan=2, pady=20)
+submit_button.grid(row=10, columnspan=2, pady=20)
 
 # Create the loading label and progress bar, but do not show them initially
 loading_label = ctk.CTkLabel(app, text="Processing...", font=("Helvetica", 16, "bold"), text_color="white", anchor="center")

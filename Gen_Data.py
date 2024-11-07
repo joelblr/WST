@@ -1,9 +1,12 @@
+import sys
+import json
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+
+import Modules
 import Clean_Data
-import sys
-import json
+
 
 # Get the serialized data (the dictionary passed from the main script)
 data_json = sys.argv[1]  # First argument after the script name
@@ -23,9 +26,10 @@ review_title = []
 ratings = []
 comments = []
 
-for i in range(inputs['num_pages']) :
+for i in range(inputs['from_page'], inputs['to_page']+1) :
+
     # Construct the URL for the current page
-    url = inputs['base_url'] + '&page=' + str(i+1)
+    url = inputs['base_url'] + '&page=' + str(i)
 
     # Send a GET request to the page
     page = requests.get(url, headers=headers)
@@ -98,4 +102,4 @@ df = pd.DataFrame(data)
 # df['Rating'].fillna(0, inplace=True)
 
 # Save the DataFrame to a CSV file
-df.to_csv(inputs['filename'] + '.csv', index=False)
+Modules.save_df(df, inputs['filename'], '.csv')
