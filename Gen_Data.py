@@ -75,20 +75,10 @@ customer_names = customer_names[:min_length]
 review_title = review_title[:min_length]
 ratings = ratings[:min_length]
 comments = comments[:min_length]
+print(f"Total Number of Records: {min_length}")
+
 
 # Create a DataFrame from the collected data
-data = {
-    'Customer Name': customer_names,
-    'Review Title': review_title,
-    'Rating': ratings,
-    'Comment': comments
-}
-
-df = pd.DataFrame(data)
-print(f"Total Number of Records: {len(review_title)}")
-
-## comments
-import pandas as pd
 data = {
     'Product Name': product_name*min_length,
     'Customer Name': customer_names,
@@ -96,8 +86,6 @@ data = {
     'Rating': ratings,
     'Comment': comments
 }
-
-
 df = pd.DataFrame(data)
 # df['Rating'].fillna(0, inplace=True)
 
