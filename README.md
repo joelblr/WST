@@ -5,14 +5,24 @@ Make sure you have Python installed on your system. You can download it from [py
 
 ## Setup Instructions
 
+   #### All @ once
+   ```bash
+   git clone https://github.com/joelblr/WST-FKART.git
+   cd WST-FKART\
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install -r requirements.txt
+   python app.py
+
+   ```
 Follow these steps to set up and run the application:
 1. **Clone the Project**
    ```bash
-   git clone https://github.com/joelblr/WST.git
+   git clone https://github.com/joelblr/WST-FKART.git
    ```
 2. **Navigate to Project Directory**
    ```bash
-   cd WST\
+   cd WST-FKART\
    ```
 3. **Create a Virtual Environment**
    ```bash
